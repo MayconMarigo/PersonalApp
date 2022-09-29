@@ -1,20 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { Appearance, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { GlobalStyles } from "./GlobalStyles";
+import * as NavigationBar from "expo-navigation-bar";
+
+import Login from "./src/screens/login/Login";
 
 export default function App() {
+  NavigationBar.setBehaviorAsync("inset-swipe");
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={GlobalStyles.AndroidSafeArea}>
+      <Login />
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
