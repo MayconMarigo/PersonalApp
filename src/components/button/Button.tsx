@@ -1,9 +1,28 @@
-import { StyleSheet, Button, View } from "react-native";
+import { StyleSheet, Button, View, TouchableOpacity, Text } from "react-native";
 import { ButtonProps } from "./interface";
+
 export default function StyledButton(props: ButtonProps) {
+  const styles = StyleSheet.create({
+    button: {
+      width: props.width,
+      backgroundColor: props.bgColor,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingVertical: 10,
+      borderRadius: 8,
+    },
+  });
   return (
-    <View style={{ width: props.width }}>
-      <Button color={props.color} title={props.title} onPress={props.onPress} />
-    </View>
+    <TouchableOpacity style={styles.button} onPress={props.onPress}>
+      <Text
+        style={{
+          color: props.color || "#D6D6D6",
+          fontWeight: "600",
+          fontSize: 14,
+        }}
+      >
+        {props.title}
+      </Text>
+    </TouchableOpacity>
   );
 }

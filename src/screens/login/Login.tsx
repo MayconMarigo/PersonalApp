@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import Logo from "../../images/login-logo.png";
 import StyledInput from "../../components/input/Input";
@@ -14,9 +15,19 @@ import StyledButton from "../../components/button/Button";
 import Footer from "../../components/footer/Footer";
 
 export default function Login() {
+  const styles = StyleSheet.create({
+    container_gray: {
+      flex: 1,
+      backgroundColor: "#D6D6D6",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  });
+
+  const navigation = useNavigation();
+
   return (
     <>
-      <View style={styles.container_white} />
       <View
         style={{ ...styles.container_gray, justifyContent: "space-evenly" }}
       >
@@ -38,16 +49,18 @@ export default function Login() {
             }}
           >
             <StyledInput
-              name=""
+              value=""
+              onChange={() => 0}
               placeholder="Usuário"
-              bottom_color="black"
               mb={10}
             />
             <StyledInput
-              name=""
+              value=""
+              onChange={() => 0}
               placeholder="Senha"
-              bottom_color="black"
               mb={7}
+              icon
+              secure
             />
             <TouchableOpacity
               onPress={() => alert("z")}
@@ -66,12 +79,14 @@ export default function Login() {
             <StyledButton
               width="100%"
               title="Entrar"
-              color="#2E2E2E"
-              onPress={() => alert("botaozin")}
+              bgColor="#2E2E2E"
+              onPress={() => alert("logar")}
             />
             <View style={{ flexDirection: "row", marginTop: 10 }}>
               <Text style={{ marginRight: 5 }}>Ainda não possui conta?</Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Cadastrar" as never)}
+              >
                 <Text style={{ fontWeight: "900" }}>Cadastre-se</Text>
               </TouchableOpacity>
             </View>
@@ -82,18 +97,3 @@ export default function Login() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container_white: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-  },
-  container_gray: {
-    flex: 9,
-    backgroundColor: "#D6D6D6",
-    borderTopLeftRadius: 60,
-    borderTopRightRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
