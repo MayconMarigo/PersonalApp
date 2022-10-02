@@ -1,17 +1,26 @@
-import { View, Text, StyleSheet, ScrollView, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { Stack, Chip } from "@react-native-material/core";
 import StyledButton from "../../components/button/Button";
 import CheckBox from "../../components/checkbox/Checkbox";
 import Footer from "../../components/footer/Footer";
 import StyledInput from "../../components/input/Input";
 import Icon from "@expo/vector-icons/AntDesign";
+import Back from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Register() {
   const styles = StyleSheet.create({
     container_gray: {
       backgroundColor: "#2E2E2E",
-      justifyContent: "center",
+      justifyContent: "space-evenly",
       alignItems: "center",
       height: 200,
     },
@@ -28,11 +37,12 @@ export default function Register() {
       borderRadius: 99,
       borderColor: "#ffffff",
       borderWidth: 5,
-      marginBottom: "-30%",
+      marginBottom: "-15%",
       backgroundColor: "#FFD25A",
     },
   });
 
+  const navigation = useNavigation();
   const [client, setClient] = useState<boolean>(true);
   const [personal, setPersonal] = useState<boolean>(false);
   const [chips, setChips] = useState<Array<string>>([]);
@@ -84,9 +94,26 @@ export default function Register() {
     <>
       <ScrollView>
         <View style={styles.container_gray}>
-          <View style={styles.photo_container}>
-            <Text>z</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              alignItems: "center",
+              paddingHorizontal: 15,
+            }}
+          >
+            <TouchableOpacity>
+              <Back
+                name="arrow-back"
+                style={{ color: "white", fontSize: 24 }}
+                onPress={() => navigation.goBack()}
+              />
+            </TouchableOpacity>
+            <Text style={{ color: "white", fontSize: 24, marginLeft: 20 }}>
+              Cadastro
+            </Text>
           </View>
+          <View style={styles.photo_container} />
         </View>
         <View style={styles.container_white}>
           <StyledInput
