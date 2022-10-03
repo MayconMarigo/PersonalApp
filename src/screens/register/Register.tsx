@@ -7,6 +7,7 @@ import CheckBox from "../../components/checkbox/Checkbox";
 import Footer from "../../components/footer/Footer";
 import StyledInput from "../../components/input/Input";
 import Header from "../../components/navigation-header/Header";
+import { UserProps } from "./interface";
 
 export default function Register() {
   const styles = StyleSheet.create({
@@ -39,7 +40,7 @@ export default function Register() {
   const [chips, setChips] = useState<Array<string>>([]);
   const [text, setText] = useState<string>("");
   const [about, setAbout] = useState<string>("");
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<UserProps>({
     name: "",
     email: "",
     password: "",
@@ -48,6 +49,7 @@ export default function Register() {
     hourValue: 0,
     about: "",
   });
+  const [repeatPassword, setRepeatPassword] = useState<string>("");
 
   var chipsArr: Array<string> = [];
   const onChangeText = (text: string) => {
@@ -90,29 +92,32 @@ export default function Register() {
         </View>
         <View style={styles.container_white}>
           <StyledInput
-            value=""
-            onChange={() => 0}
+            value={user.name}
+            onChange={(e: string) => setUser({ ...user, name: e })}
             placeholder="Nome Completo *"
             mv={10}
           />
           <StyledInput
-            value=""
-            onChange={() => 0}
+            value={user.email}
+            onChange={(e: string) => setUser({ ...user, email: e })}
             placeholder="Email *"
+            keyboard="email-address"
             mv={10}
           />
           <StyledInput
-            value=""
-            onChange={() => 0}
+            value={user.password}
+            onChange={(e: string) => setUser({ ...user, password: e })}
             placeholder="Senha *"
             icon
+            secure
             mv={10}
           />
           <StyledInput
-            value=""
-            onChange={() => 0}
+            value={repeatPassword}
+            onChange={(e: string) => setRepeatPassword(e)}
             placeholder="Confirme a senha *"
             icon
+            secure
             mv={10}
           />
           <View
@@ -178,8 +183,8 @@ export default function Register() {
                 />
               </View>
               <StyledInput
-                value=""
-                onChange={() => 0}
+                value={user.hourValue}
+                onChange={(e: number) => setUser({ ...user, hourValue: e })}
                 placeholder="Valor da hora aula *"
                 mv={10}
               />

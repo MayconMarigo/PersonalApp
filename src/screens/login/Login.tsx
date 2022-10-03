@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import Logo from "../../images/login-logo.png";
@@ -24,7 +24,15 @@ export default function Login() {
     },
   });
 
+  interface UserProps {
+    email: string;
+    password: string;
+  }
   const navigation = useNavigation();
+  const [user, setUser] = useState<UserProps>({
+    email: "",
+    password: "",
+  });
 
   return (
     <>
@@ -49,14 +57,15 @@ export default function Login() {
             }}
           >
             <StyledInput
-              value=""
-              onChange={() => 0}
+              value={user.email}
+              onChange={(e: string) => setUser({ ...user, email: e })}
               placeholder="Usuário"
               mb={10}
+              keyboard="email-address"
             />
             <StyledInput
-              value=""
-              onChange={() => 0}
+              value={user.password}
+              onChange={(e: string) => setUser({ ...user, password: e })}
               placeholder="Senha"
               mb={7}
               icon
