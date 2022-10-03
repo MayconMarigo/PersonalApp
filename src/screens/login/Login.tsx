@@ -89,7 +89,12 @@ export default function Login() {
               width="100%"
               title="Entrar"
               bgColor="#2E2E2E"
-              onPress={() => alert("logar")}
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Home" as never }],
+                })
+              }
             />
             <View style={{ flexDirection: "row", marginTop: 10 }}>
               <Text style={{ marginRight: 5 }}>Ainda não possui conta?</Text>
