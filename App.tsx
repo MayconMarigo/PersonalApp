@@ -7,6 +7,7 @@ import { GlobalStyles } from "./GlobalStyles";
 import Login from "./src/screens/login/Login";
 import Register from "./src/screens/register/Register";
 import ResetPassword from "./src/screens/reset-password/ResetPassword";
+import Home from "./src/screens/home/Home";
 
 export default function App() {
   NavigationBar.setVisibilityAsync("hidden");
@@ -37,12 +38,11 @@ export default function App() {
             options={{
               headerShown: false,
             }}
-            // options={{
-            //   headerShadowVisible: false,
-            //   headerStyle: { backgroundColor: "#2E2E2E" },
-            //   headerTitleStyle: { color: "#fff" },
-            //   headerTintColor: "#fff",
-            // }}
+          />
+          <LoginStack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
           />
         </LoginStack.Navigator>
       </SafeAreaView>
