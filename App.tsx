@@ -6,6 +6,7 @@ import { GlobalStyles } from "./GlobalStyles";
 
 import Login from "./src/screens/login/Login";
 import Register from "./src/screens/register/Register";
+import ResetPassword from "./src/screens/reset-password/ResetPassword";
 
 export default function App() {
   NavigationBar.setVisibilityAsync("hidden");
@@ -29,11 +30,18 @@ export default function App() {
             options={{
               headerShown: false,
             }}
+          />
+          <LoginStack.Screen
+            name="ResetPw"
+            component={ResetPassword}
+            options={{
+              headerShown: false,
+            }}
             // options={{
             //   headerShadowVisible: false,
-            //   headerStyle: {
-            //     backgroundColor: "#2E2E2E",
-            //   },
+            //   headerStyle: { backgroundColor: "#2E2E2E" },
+            //   headerTitleStyle: { color: "#fff" },
+            //   headerTintColor: "#fff",
             // }}
           />
         </LoginStack.Navigator>

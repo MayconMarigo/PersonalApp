@@ -4,4 +4,7 @@ export interface ButtonProps {
   onPress: () => void;
   width: string;
   bgColor: string;
+  mt?: number;
+  mb?: number;
+  mv?: number;
 }
