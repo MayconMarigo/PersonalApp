@@ -12,5 +12,5 @@ export interface InputProps {
   secure?: boolean;
   max?: number;
   value: any;
-  onChange: () => void;
+  onChange: (param: any) => void;
 }

@@ -29,7 +29,6 @@ const StyledInput = (props: InputProps) => {
   });
 
   const [secure, setIsSecure] = useState<boolean>(true);
-  const [value, setValue] = useState<any>("");
 
   return (
     <View style={styles.view}>
@@ -40,11 +39,11 @@ const StyledInput = (props: InputProps) => {
         style={styles.input}
         placeholder={props.placeholder}
         keyboardType={props.keyboard || "default"}
-        secureTextEntry={props.secure}
+        secureTextEntry={secure}
       />
       {props.icon ? (
         <TouchableOpacity onPress={() => setIsSecure(!secure)}>
-          <Icon name={secure ? "eye" : "eye-off"} size={20} />
+          <Icon name={secure ? "eye-off" : "eye"} size={20} />
         </TouchableOpacity>
       ) : null}
     </View>
