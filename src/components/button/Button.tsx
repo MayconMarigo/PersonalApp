@@ -10,6 +10,9 @@ export default function StyledButton(props: ButtonProps) {
       alignItems: "center",
       paddingVertical: 10,
       borderRadius: 8,
+      marginTop: props.mt,
+      marginBottom: props.mb,
+      marginVertical: props.mv,
     },
   });
   return (

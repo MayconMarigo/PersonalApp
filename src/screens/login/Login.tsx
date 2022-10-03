@@ -63,7 +63,7 @@ export default function Login() {
               secure
             />
             <TouchableOpacity
-              onPress={() => alert("z")}
+              onPress={() => navigation.navigate("ResetPw" as never)}
               style={{ alignSelf: "flex-end" }}
             >
               <Text>Esqueci minha senha</Text>

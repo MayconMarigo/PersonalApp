@@ -40,7 +40,7 @@ const StyledInput = (props: InputProps) => {
         style={styles.input}
         placeholder={props.placeholder}
         keyboardType={props.keyboard || "default"}
-        secureTextEntry={secure}
+        secureTextEntry={props.secure}
       />
       {props.icon ? (
         <TouchableOpacity onPress={() => setIsSecure(!secure)}>
