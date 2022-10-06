@@ -14,15 +14,16 @@ import StyledInput from "../../components/input/Input";
 import StyledButton from "../../components/button/Button";
 import Footer from "../../components/footer/Footer";
 
+//@ts-ignore: Styled Components
+import styled from "styled-components/native";
+
 export default function Login() {
-  const styles = StyleSheet.create({
-    container_gray: {
-      flex: 1,
-      backgroundColor: "#D6D6D6",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  });
+  const Container = styled.View`
+    flex: 1;
+    background-color: #d6d6d6;
+    justify-content: center;
+    align-items: center;
+  `;
 
   interface UserProps {
     email: string;
@@ -36,9 +37,7 @@ export default function Login() {
 
   return (
     <>
-      <View
-        style={{ ...styles.container_gray, justifyContent: "space-evenly" }}
-      >
+      <Container>
         <View
           style={{
             width: "100%",
@@ -106,7 +105,7 @@ export default function Login() {
             </View>
           </View>
         </View>
-      </View>
+      </Container>
       <Footer color="#ffffff" backgroundColor="#2E2E2E" />
     </>
   );
