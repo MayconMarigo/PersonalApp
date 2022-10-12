@@ -105,7 +105,7 @@ export default function Login() {
           <Image source={useColorScheme() === "dark" ? "" : LogoLight} />
           <View
             style={{
-              width: "80%",
+              width: "90%",
               alignItems: "center",
               marginTop: 25,
             }}
@@ -118,6 +118,7 @@ export default function Login() {
               placeholder="Usuário"
               mb={10}
               keyboard="email-address"
+              autoCapitalize={"none"}
             />
             <StyledInput
               value={password}
@@ -137,7 +138,7 @@ export default function Login() {
           </View>
           <View
             style={{
-              width: "80%",
+              width: "70%",
               alignItems: "center",
             }}
           >

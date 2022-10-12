@@ -122,6 +122,7 @@ export default function Register() {
             onChangeText={(e: string) => setUser({ ...user, name: e })}
             placeholder="Nome Completo *"
             mv={6}
+            autoCapitalize="words"
           />
           <StyledInput
             value={user.email}
@@ -129,6 +130,7 @@ export default function Register() {
             placeholder="Email *"
             mv={6}
             keyboard="email-address"
+            autoCapitalize="none"
           />
           <StyledInput
             value={user.password}
@@ -228,6 +230,7 @@ export default function Register() {
                 onChangeText={(e: number) => setUser({ ...user, hourValue: e })}
                 placeholder="Valor da hora aula *"
                 mv={10}
+                keyboard="number-pad"
               />
               <TextInput
                 style={{
