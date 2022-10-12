@@ -13,6 +13,14 @@ export default function TrainingCard(props: TrainingCardProps) {
         backgroundColor: "#FFE15A",
         borderRadius: 10,
         marginBottom: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 4,
       }}
     >
       <View

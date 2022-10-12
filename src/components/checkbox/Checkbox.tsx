@@ -1,48 +1,48 @@
 import React from "react";
+import { useColorScheme, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { CheckboxProps } from "./interface";
+//@ts-ignore
+import styled from "styled-components/native";
 
 export default function CheckBox(props: CheckboxProps) {
-  const styles = StyleSheet.create({
-    CheckBox: {
-      width: 25,
-      height: 25,
-      borderWidth: 1,
-      borderRadius: 9999,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    WrapperCheckBox: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    LabelCheck: {
-      color: props.color || "#2E2E2E",
-      marginLeft: 6,
-    },
-  });
+  const StyledCheckBox = styled.TouchableOpacity`
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    border-color: ${(props: any) => props.theme.FOOTER_BACKGROUND};
+  `;
+
+  const StyledText = styled.Text`
+    color: ${(props: any) => props.theme.TEXT};
+    margin-left: 6px;
+  `;
   return (
-    <View style={styles.WrapperCheckBox}>
-      <TouchableOpacity
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
+      <StyledCheckBox
         onPress={props.onChange}
-        style={[
-          styles.CheckBox,
-          { borderColor: props.checkColor ? props.checkColor : "#fff" },
-        ]}
+        style={{
+          backgroundColor: "#fff",
+        }}
       >
         {props.value ? (
           <Icon
             name="check"
             style={{
               fontSize: 16,
-              color: props.iconColor ? props.iconColor : "#fff",
+              color: useColorScheme() === "dark" ? "#FFE15A" : "#2E2E2E",
             }}
           />
         ) : null}
-      </TouchableOpacity>
-
-      <Text style={styles.LabelCheck}>{props.label}</Text>
+      </StyledCheckBox>
+      <StyledText>{props.label}</StyledText>
     </View>
   );
 }

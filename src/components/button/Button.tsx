@@ -1,31 +1,44 @@
-import { StyleSheet, Button, View, TouchableOpacity, Text } from "react-native";
 import { ButtonProps } from "./interface";
+//@ts-ignore
+import styled from "styled-components/native";
 
 export default function StyledButton(props: ButtonProps) {
-  const styles = StyleSheet.create({
-    button: {
-      width: props.width,
-      backgroundColor: props.bgColor,
-      justifyContent: "center",
-      alignItems: "center",
-      paddingVertical: 10,
-      borderRadius: 8,
-      marginTop: props.mt,
-      marginBottom: props.mb,
-      marginVertical: props.mv,
-    },
-  });
+  const StyledTouchableButton = styled.TouchableOpacity`
+    width: ${props.width};
+    background-color: ${(props: any) => props.theme.BUTTON_BACKGROUND};
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding-vertical: 10px;
+    shadow-color: #000;
+
+    shadow-opacity: 0.25;
+    shadow-radius: 3.84px;
+    elevation: 5;
+  `;
+
+  const StyledText = styled.Text`
+    color: ${(props: any) => props.theme.BUTTON_TEXT};
+    font-weight: 900;
+    text-transform: uppercase;
+  `;
+
   return (
-    <TouchableOpacity style={styles.button} onPress={props.onPress}>
-      <Text
-        style={{
-          color: props.color || "#D6D6D6",
-          fontWeight: "600",
-          fontSize: 14,
-        }}
-      >
-        {props.title}
-      </Text>
-    </TouchableOpacity>
+    <StyledTouchableButton
+      onPress={props.onPress}
+      disabled={props.disabled}
+      style={{
+        marginTop: props.mt,
+        marginBottom: props.mb,
+        marginVertical: props.mv,
+        ...props.style,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+      }}
+    >
+      <StyledText>{props.title}</StyledText>
+    </StyledTouchableButton>
   );
 }

@@ -5,39 +5,95 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  useColorScheme,
+  Modal,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { ActivityIndicator } from "@react-native-material/core";
 
-import Logo from "../../images/login-logo.png";
+import LogoLight from "../../images/login-logo-light.png";
 import StyledInput from "../../components/input/Input";
 import StyledButton from "../../components/button/Button";
 import Footer from "../../components/footer/Footer";
+import themes from "../../themes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //@ts-ignore: Styled Components
 import styled from "styled-components/native";
+import axios from "axios";
 
 export default function Login() {
-  const Container = styled.View`
-    flex: 1;
-    background-color: #d6d6d6;
-    justify-content: center;
-    align-items: center;
-  `;
+  useLayoutEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await JSON.parse(
+          //@ts-ignore
+          AsyncStorage.getItem("@AppPersonal-user")
+        );
 
-  interface UserProps {
-    email: string;
-    password: string;
-  }
+        console.warn(user);
+        if (user)
+          return navigation.reset({
+            index: 0,
+            routes: [{ name: "Home" as never }],
+          });
+      } catch (error) {
+        return;
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const StyledText = styled.Text`
+    color: ${(props: any) => props.theme.TEXT};
+  `;
   const navigation = useNavigation();
-  const [user, setUser] = useState<UserProps>({
-    email: "",
-    password: "",
-  });
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const HandleLogin = async () => {
+    setloading(true);
+    try {
+      const response = await axios.post("http://18.207.247.235/login", {
+        email: email,
+        password: password,
+      });
+      const jsonValue = JSON.stringify(response.data);
+      await AsyncStorage.setItem("@AppPersonal-user", jsonValue);
+      console.warn(response);
+
+      setloading(false);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" as never }],
+      });
+    } catch (error) {
+      setloading(false);
+      Alert.alert("Erro ao efetuar login!", "Usuário ou senha incorretos.");
+      return error;
+    }
+  };
+
+  const [loading, setloading] = useState(false);
+  const [isSecure, setIsSecure] = useState<boolean>(true);
+
+  const deviceTheme = useColorScheme();
 
   return (
     <>
-      <Container>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor:
+            //@ts-ignore
+            themes[deviceTheme].BACKGROUND || themes.light.BACKGROUND,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <View
           style={{
             width: "100%",
@@ -46,8 +102,7 @@ export default function Login() {
             justifyContent: "space-around",
           }}
         >
-          <Image source={Logo} />
-
+          <Image source={useColorScheme() === "dark" ? "" : LogoLight} />
           <View
             style={{
               width: "80%",
@@ -56,28 +111,30 @@ export default function Login() {
             }}
           >
             <StyledInput
-              value={user.email}
-              onChange={(e: string) => setUser({ ...user, email: e })}
+              value={email}
+              onChangeText={(text: string) => {
+                setEmail(text);
+              }}
               placeholder="Usuário"
               mb={10}
               keyboard="email-address"
             />
             <StyledInput
-              value={user.password}
-              onChange={(e: string) => setUser({ ...user, password: e })}
+              value={password}
+              onChangeText={(text: string) => setPassword(text)}
               placeholder="Senha"
+              onPress={() => setIsSecure(!isSecure)}
               mb={7}
               icon
-              secure
+              secure={isSecure}
             />
             <TouchableOpacity
               onPress={() => navigation.navigate("ResetPw" as never)}
               style={{ alignSelf: "flex-end" }}
             >
-              <Text>Esqueci minha senha</Text>
+              <StyledText>Esqueci minha senha</StyledText>
             </TouchableOpacity>
           </View>
-
           <View
             style={{
               width: "80%",
@@ -86,27 +143,33 @@ export default function Login() {
           >
             <StyledButton
               width="100%"
-              title="Entrar"
-              bgColor="#2E2E2E"
-              onPress={() =>
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: "Home" as never }],
-                })
+              style={{ opacity: loading ? 0.5 : 1 }}
+              disabled={loading}
+              title={
+                loading ? (
+                  <ActivityIndicator size={20} color="#fff" />
+                ) : (
+                  "entrar"
+                )
               }
+              onPress={() => HandleLogin()}
             />
             <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <Text style={{ marginRight: 5 }}>Ainda não possui conta?</Text>
+              <StyledText style={{ marginRight: 5 }}>
+                Ainda não possui conta?
+              </StyledText>
               <TouchableOpacity
                 onPress={() => navigation.navigate("Cadastrar" as never)}
               >
-                <Text style={{ fontWeight: "900" }}>Cadastre-se</Text>
+                <StyledText style={{ fontWeight: "900" }}>
+                  Cadastre-se
+                </StyledText>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-      </Container>
-      <Footer color="#ffffff" backgroundColor="#2E2E2E" />
+      </View>
+      <Footer />
     </>
   );
 }

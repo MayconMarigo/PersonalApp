@@ -1,30 +1,52 @@
+import { Divider } from "@react-native-material/core";
+import { useState, useEffect } from "react";
 import {
-  View,
-  Text,
+  ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
+  View,
 } from "react-native";
-import { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Divider } from "@react-native-material/core";
-import TrainingCard from "../../../../components/training/Training";
+import TrainingCard from "../../../../components/trainingCard/TrainingCard";
+
+//@ts-ignore
+import styled from "styled-components/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Training() {
-  const styles = StyleSheet.create({
-    container_gray: {
-      flex: 1,
-      backgroundColor: "#F2F2F2",
-      paddingHorizontal: 15,
-      paddingTop: 15,
-    },
-  });
+  const Container = styled.View`
+    flex: 1;
+    background-color: ${(props: any) => props.theme.TABS_BACKGROUND};
+  `;
+  const InputContainer = styled.View`
+    width: 90%;
+    height: 40px;
+    padding-horizontal: 10px;
+    flex-direction: row;
+    border-radius: 8px;
+    align-items: center;
+    background-color: ${(props: any) => props.theme.INPUT_BACKGROUND};
+  `;
 
   const [search, setSearch] = useState<string>("");
 
+  useEffect(() => {
+    const fetchData = async () => {
+      //@ts-ignore
+      const user = await JSON.parse(AsyncStorage.getItem("@AppPersonal-user"));
+    };
+    fetchData();
+  }, []);
+
   return (
-    <View style={styles.container_gray}>
+    <Container
+      style={{
+        paddingHorizontal: 15,
+        paddingTop: 15,
+      }}
+    >
       <View
         style={{
           width: "100%",
@@ -34,23 +56,13 @@ export default function Training() {
           alignItems: "center",
         }}
       >
-        <View
-          style={{
-            width: "90%",
-            height: 40,
-            paddingHorizontal: 10,
-            flexDirection: "row",
-            borderRadius: 8,
-            alignItems: "center",
-            backgroundColor: "#B6B6B6",
-          }}
-        >
+        <InputContainer>
           <Icon name="dumbbell" size={18} />
           <TextInput
             style={{ marginLeft: 15 }}
             placeholder="Busque seus treinos"
           />
-        </View>
+        </InputContainer>
         <View
           style={{
             flex: 1,
@@ -121,6 +133,6 @@ export default function Training() {
           value={"4.2"}
         />
       </ScrollView>
-    </View>
+    </Container>
   );
 }

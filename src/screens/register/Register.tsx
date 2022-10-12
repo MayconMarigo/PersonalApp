@@ -1,29 +1,37 @@
 import Icon from "@expo/vector-icons/AntDesign";
 import { Chip, Stack } from "@react-native-material/core";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  useColorScheme,
+  View,
+} from "react-native";
 import StyledButton from "../../components/button/Button";
 import CheckBox from "../../components/checkbox/Checkbox";
 import Footer from "../../components/footer/Footer";
 import StyledInput from "../../components/input/Input";
 import Header from "../../components/navigation-header/Header";
 import { UserProps } from "./interface";
+import themes from "../../themes";
+
+//@ts-ignore: Styled Components
+import styled from "styled-components/native";
 
 export default function Register() {
+  const HeaderContainer = styled.View`
+    justify-content: space-evenly;
+    align-items: center;
+    height: 200px;
+    background-color: ${(props: any) =>
+      props.theme.NAVIGATION_HEADER_BACKGROUND};
+  `;
+
+  const deviceTheme = useColorScheme();
+
   const styles = StyleSheet.create({
-    container_gray: {
-      backgroundColor: "#2E2E2E",
-      justifyContent: "space-evenly",
-      alignItems: "center",
-      height: 200,
-    },
-    container_white: {
-      backgroundColor: "#F2F2F2",
-      paddingHorizontal: 20,
-      justifyContent: "center",
-      paddingTop: 50,
-      zIndex: -1,
-    },
     photo_container: {
       width: 150,
       height: 150,
@@ -34,7 +42,9 @@ export default function Register() {
       backgroundColor: "#FFD25A",
     },
   });
-
+  const [isSecure, setIsSecure] = useState<boolean>(true);
+  const [isSecureRepeatPassword, setIsSecureRepeatPassword] =
+    useState<boolean>(true);
   const [client, setClient] = useState<boolean>(true);
   const [personal, setPersonal] = useState<boolean>(false);
   const [chips, setChips] = useState<Array<string>>([]);
@@ -52,7 +62,7 @@ export default function Register() {
   const [repeatPassword, setRepeatPassword] = useState<string>("");
 
   var chipsArr: Array<string> = [];
-  const onChangeText = (text: string) => {
+  const onChangeText = (text: any) => {
     setText(text);
     if (text.slice(-1) == ";") {
       chipsArr = [...chips];
@@ -85,40 +95,58 @@ export default function Register() {
 
   return (
     <>
-      <ScrollView>
-        <View style={styles.container_gray}>
+      <ScrollView
+        style={{
+          backgroundColor:
+            //@ts-ignore
+            themes[deviceTheme].BACKGROUND || themes.light.BACKGROUND,
+        }}
+      >
+        <HeaderContainer>
           <Header iconName="arrow-back" title="Cadastro" />
           <View style={styles.photo_container} />
-        </View>
-        <View style={styles.container_white}>
+        </HeaderContainer>
+        <View
+          style={{
+            backgroundColor:
+              //@ts-ignore
+              themes[deviceTheme].BACKGROUND || themes.light.BACKGROUND,
+            paddingHorizontal: 20,
+            justifyContent: "center",
+            paddingTop: 50,
+            zIndex: -1,
+          }}
+        >
           <StyledInput
             value={user.name}
-            onChange={(e: string) => setUser({ ...user, name: e })}
+            onChangeText={(e: string) => setUser({ ...user, name: e })}
             placeholder="Nome Completo *"
-            mv={10}
+            mv={6}
           />
           <StyledInput
             value={user.email}
-            onChange={(e: string) => setUser({ ...user, email: e })}
+            onChangeText={(e: string) => setUser({ ...user, email: e })}
             placeholder="Email *"
+            mv={6}
             keyboard="email-address"
-            mv={10}
           />
           <StyledInput
             value={user.password}
-            onChange={(e: string) => setUser({ ...user, password: e })}
+            onChangeText={(e: string) => setUser({ ...user, password: e })}
             placeholder="Senha *"
             icon
-            secure
-            mv={10}
+            mv={6}
+            onPress={() => setIsSecure(!isSecure)}
+            secure={isSecure}
           />
           <StyledInput
             value={repeatPassword}
-            onChange={(e: string) => setRepeatPassword(e)}
+            onChangeText={(e: string) => setRepeatPassword(e)}
             placeholder="Confirme a senha *"
             icon
-            secure
-            mv={10}
+            mv={6}
+            onPress={() => setIsSecureRepeatPassword(!isSecureRepeatPassword)}
+            secure={isSecureRepeatPassword}
           />
           <View
             style={{
@@ -130,15 +158,11 @@ export default function Register() {
           >
             <CheckBox
               label="Sou Cliente"
-              iconColor="#2E2E2E"
-              checkColor="#2E2E2E"
               value={client}
               onChange={() => onCheckboxChange("client")}
             />
             <CheckBox
               label="Sou Personal Trainer"
-              iconColor="#2E2E2E"
-              checkColor="#2E2E2E"
               value={personal}
               onChange={() => onCheckboxChange("personal")}
             />
@@ -160,6 +184,15 @@ export default function Register() {
                         marginHorizontal: 2,
                         marginVertical: 5,
                         backgroundColor: "#FFD25A",
+                        borderRadius: 8,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
                       }}
                       onPress={() => handleRemove(chip)}
                       key={index}
@@ -169,22 +202,30 @@ export default function Register() {
                   ))}
                 </Stack>
                 <TextInput
+                  value={text}
                   style={{
                     marginTop: chips.length > 0 ? 5 : 0,
                     padding: 15,
                     borderRadius: 8,
                     backgroundColor: "#FFD25A",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
                   }}
                   placeholder="Especialidades separadas por ; *"
                   onChangeText={(e) => onChangeText(e)}
-                  value={text}
                   autoCapitalize="words"
                   maxLength={150}
                 />
               </View>
               <StyledInput
                 value={user.hourValue}
-                onChange={(e: number) => setUser({ ...user, hourValue: e })}
+                onChangeText={(e: number) => setUser({ ...user, hourValue: e })}
                 placeholder="Valor da hora aula *"
                 mv={10}
               />
@@ -193,6 +234,14 @@ export default function Register() {
                   padding: 15,
                   borderRadius: 8,
                   backgroundColor: "#FFD25A",
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
                 }}
                 placeholder="Fale um pouco sobre você...*"
                 onChangeText={(e) => setAbout(e)}
@@ -213,24 +262,16 @@ export default function Register() {
               marginBottom: 25,
             }}
           >
-            <StyledButton
-              title="LIMPAR CAMPOS"
-              onPress={() => 0}
-              width="45%"
-              bgColor="#2E2E2E"
-              color="#ffffff"
-            />
+            <StyledButton title="LIMPAR CAMPOS" onPress={() => 0} width="45%" />
             <StyledButton
               title="CADASTRAR"
-              onPress={() => 0}
+              onPress={() => console.warn(user.email, user.name, user.password)}
               width="45%"
-              bgColor="#FFD25A"
-              color="#2E2E2E"
             />
           </View>
         </View>
       </ScrollView>
-      <Footer backgroundColor="#2E2E2E" color="#FFFFFF" />
+      <Footer />
     </>
   );
 }

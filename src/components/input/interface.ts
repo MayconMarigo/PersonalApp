@@ -1,7 +1,10 @@
-import { KeyboardTypeOptions } from "react-native";
+import { KeyboardTypeOptions, TextInputProps } from "react-native";
 
-export interface InputProps {
+export interface InputProps extends TextInputProps {
   placeholder: string;
+  value: any;
+  onChangeText: any;
+  onPress?: any;
   bottom_color?: string;
   width?: string;
   mt?: number;
@@ -11,6 +14,4 @@ export interface InputProps {
   keyboard?: KeyboardTypeOptions;
   secure?: boolean;
   max?: number;
-  value: any;
-  onChange: (param: any) => void;
 }
