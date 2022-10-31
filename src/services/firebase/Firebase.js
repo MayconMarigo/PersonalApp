@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getAuth, signInWithRedirect, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDrgV-_fC4A8mEjQjNPpRd_DAOQAXHBkYY",
@@ -11,3 +12,16 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+const LoginWithGoogle = async () => {
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  try {
+    signInWithRedirect(auth, provider)
+  } catch (error) {
+    console.warn(error)
+    return error;
+  }
+};
+
+export default LoginWithGoogle

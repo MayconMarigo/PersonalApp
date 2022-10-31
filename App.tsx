@@ -8,20 +8,18 @@ import Login from "./src/screens/login/Login";
 import Register from "./src/screens/register/Register";
 import ResetPassword from "./src/screens/reset-password/ResetPassword";
 
-import { useInterceptors } from "./src/services/axios/";
 import Home from "./src/screens/home/Home";
 import { ThemeProvider } from "styled-components";
 import themes, { CustomThemeProps } from "./src/themes";
 
-export default function App() {
-  useInterceptors();
-  const deviceTheme = useColorScheme();
+import "./src/services/axios";
 
+export default function App() {
+  const deviceTheme = useColorScheme();
   const LoginStack = createNativeStackNavigator();
 
   //@ts-ignore - device theme
   const theme: CustomThemeProps = themes[deviceTheme] || themes.light;
-
   //@ts-ignore
   NavigationBar.setBackgroundColorAsync(themes[deviceTheme].SAFE_AREA);
   return (
@@ -34,33 +32,17 @@ export default function App() {
             backgroundColor: themes[deviceTheme].SAFE_AREA,
           }}
         >
-          <LoginStack.Navigator initialRouteName="Login">
-            <LoginStack.Screen
-              name="Login"
-              component={Login}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <LoginStack.Screen
-              name="Cadastrar"
-              component={Register}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <LoginStack.Screen
-              name="ResetPw"
-              component={ResetPassword}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <LoginStack.Screen
-              name="Home"
-              component={Home}
-              options={{ headerShown: false }}
-            />
+          <LoginStack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              headerShown: false,
+              animation: "slide_from_bottom",
+            }}
+          >
+            <LoginStack.Screen name="Login" component={Login} />
+            <LoginStack.Screen name="Cadastrar" component={Register} />
+            <LoginStack.Screen name="ResetPw" component={ResetPassword} />
+            <LoginStack.Screen name="Home" component={Home} />
           </LoginStack.Navigator>
         </SafeAreaView>
       </ThemeProvider>

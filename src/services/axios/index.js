@@ -1,15 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-export const useInterceptors = () => {
-  axios.interceptors.request.use((req) => {
-    if (req && req.headers) {
-      // req.headers["Access-Control-Allow-Origin"] = "*";
-      // req.headers["Content-type"] = "application/x-www-form-urlencoded";
-      // req.headers["Access-Control-Allow-Credentials"] = true;
-      // req.headers["Access-Control-Allow-Methods"] = "GET,HEAD,OPTIONS,POST,PUT";
-      // req.headers["Access-Control-Allow-Headers"] =
-      //   "Origin, X-Requested-With, Content-Type, Accept, Authorization";
-    }
-    return req;
-  });
-};
+axios.interceptors.request.use(async (req) => {
+  let token = await AsyncStorage.getItem("@AppPersonal-token");
+  if (token) {
+    req.headers = {
+      authorization: `Bearer ${token}`,
+    };
+  }
+  return req;
+});

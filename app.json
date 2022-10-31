@@ -11,6 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "packagerOpts": {
+      "sourceExts": ["cjs"]
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -25,10 +28,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.marigo01.AppPersonal"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "de8a2a9d-638b-40b5-8235-f97fb7176bf4"
+      }
     }
   }
 }

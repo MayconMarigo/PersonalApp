@@ -1,19 +1,21 @@
 import { Divider } from "@react-native-material/core";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import IconAnt from "@expo/vector-icons/AntDesign";
+
 import {
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import TrainingCard from "../../../../components/trainingCard/TrainingCard";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //@ts-ignore
 import styled from "styled-components/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Training() {
   const Container = styled.View`
@@ -30,12 +32,20 @@ export default function Training() {
     background-color: ${(props: any) => props.theme.INPUT_BACKGROUND};
   `;
 
+  const [name, setName] = useState<string>("");
   const [search, setSearch] = useState<string>("");
+  const [modal, setModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      //@ts-ignore
-      const user = await JSON.parse(AsyncStorage.getItem("@AppPersonal-user"));
+      try {
+        //@ts-ignore
+        const name = await AsyncStorage.getItem("@AppPersonal-name");
+        if (name) return setName(name);
+      } catch (error) {
+        console.warn(error);
+        return error;
+      }
     };
     fetchData();
   }, []);
@@ -47,9 +57,44 @@ export default function Training() {
         paddingTop: 15,
       }}
     >
+      <Modal animationType="slide" visible={modal} transparent>
+        <View
+          style={{
+            height: "50%",
+            marginTop: "auto",
+            backgroundColor: "#000000",
+            opacity: 0.6,
+          }}
+        />
+        <View
+          style={{
+            height: "50%",
+            marginTop: "auto",
+            padding: 10,
+            backgroundColor: "#ffff",
+          }}
+        >
+          <TouchableOpacity
+            style={{ alignSelf: "flex-end" }}
+            onPress={() => setModal(false)}
+          >
+            <IconAnt name="closecircleo" size={30} />
+          </TouchableOpacity>
+          <View>
+            <Text>Filtros em construção</Text>
+          </View>
+        </View>
+      </Modal>
+      <View>
+        <Text>
+          Seja bem vindo,{" "}
+          <Text style={{ fontWeight: "700" }}>{`Maycon !`}</Text>
+        </Text>
+      </View>
       <View
         style={{
           width: "100%",
+          marginTop: 10,
           maxHeight: 40,
           flexDirection: "row",
           justifyContent: "space-between",
@@ -71,7 +116,7 @@ export default function Training() {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModal(true)}>
             <Icon name="filter-menu" size={18} />
           </TouchableOpacity>
         </View>

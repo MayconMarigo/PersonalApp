@@ -2,8 +2,11 @@ export interface UserProps {
   name: string;
   email: string;
   password: string;
+  repeatPassword: string;
+  CPF: string;
   isPersonal: boolean;
-  roles: string[];
-  hourValue: number;
+  hourValue: any;
   about: string;
+  phone: string;
+  city: string;
 }
