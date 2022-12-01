@@ -1,4 +1,4 @@
-import { Divider } from "@react-native-material/core";
+import { ActivityIndicator, Divider } from "@react-native-material/core";
 import { useEffect, useState } from "react";
 import IconAnt from "@expo/vector-icons/AntDesign";
 
@@ -16,6 +16,9 @@ import TrainingCard from "../../../../components/trainingCard/TrainingCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //@ts-ignore
 import styled from "styled-components/native";
+import axios from "axios";
+import { TRAINING_BY_USER } from "../../../../services/global";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Training() {
   const Container = styled.View`
@@ -32,19 +35,25 @@ export default function Training() {
     background-color: ${(props: any) => props.theme.INPUT_BACKGROUND};
   `;
 
-  const [name, setName] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [modal, setModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [trainingArray, setTrainingArray] = useState<any[]>([]);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //@ts-ignore
-        const name = await AsyncStorage.getItem("@AppPersonal-name");
-        if (name) return setName(name);
+        const uid = await AsyncStorage.getItem("@AppPersonal-UID");
+        const res = await axios.post(TRAINING_BY_USER, { uid: uid });
+
+        setTrainingArray(res.data);
       } catch (error) {
-        console.warn(error);
+        // console.warn(error);
         return error;
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -86,10 +95,7 @@ export default function Training() {
         </View>
       </Modal>
       <View>
-        <Text>
-          Seja bem vindo,{" "}
-          <Text style={{ fontWeight: "700" }}>{`Maycon !`}</Text>
-        </Text>
+        <Text>Seja bem vindo ! </Text>
       </View>
       <View
         style={{
@@ -136,48 +142,53 @@ export default function Training() {
           />
         </View>
       </View>
-
-      <View style={{ width: "100%", marginVertical: 24 }}>
-        <Text style={{ textAlign: "center" }}>
-          Ops ! Parece que você ainda não possui treinos registrados :(
-        </Text>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Text>Você pode </Text>
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{ fontWeight: "900", textDecorationLine: "underline" }}
+      {loading ? (
+        <ActivityIndicator style={{ marginTop: 55 }} size={40} color="#000" />
+      ) : trainingArray && trainingArray.length > 0 ? (
+        <ScrollView style={{ marginTop: 25 }}>
+          <TrainingCard
+            personal={"Maycon Marigo"}
+            training="Aeróbico"
+            value={"4.2"}
+          />
+          <TrainingCard
+            personal={"Maycon Marigo"}
+            training="Aeróbico"
+            value={"4.2"}
+          />
+          <TrainingCard
+            personal={"Maycon Marigo"}
+            training="Aeróbico"
+            value={"4.2"}
+          />
+          <TrainingCard
+            personal={"Maycon Marigo"}
+            training="Aeróbico"
+            value={"4.2"}
+          />
+        </ScrollView>
+      ) : (
+        <View style={{ width: "100%", marginVertical: 24 }}>
+          <Text style={{ textAlign: "center" }}>
+            Ops ! Parece que você ainda não possui treinos registrados :(
+          </Text>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Text>Você pode </Text>
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+              }}
+              onPress={() => navigation.navigate("Personal" as never)}
             >
-              procurar por profissionais aqui !
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{ fontWeight: "900", textDecorationLine: "underline" }}
+              >
+                procurar por profissionais aqui !
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <ScrollView>
-        <TrainingCard
-          personal={"Maycon Marigo"}
-          training="Aeróbico"
-          value={"4.2"}
-        />
-        <TrainingCard
-          personal={"Maycon Marigo"}
-          training="Aeróbico"
-          value={"4.2"}
-        />
-        <TrainingCard
-          personal={"Maycon Marigo"}
-          training="Aeróbico"
-          value={"4.2"}
-        />
-        <TrainingCard
-          personal={"Maycon Marigo"}
-          training="Aeróbico"
-          value={"4.2"}
-        />
-      </ScrollView>
+      )}
     </Container>
   );
 }

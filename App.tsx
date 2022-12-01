@@ -13,6 +13,7 @@ import { ThemeProvider } from "styled-components";
 import themes, { CustomThemeProps } from "./src/themes";
 
 import "./src/services/axios";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const deviceTheme = useColorScheme();
@@ -32,6 +33,7 @@ export default function App() {
             backgroundColor: themes[deviceTheme].SAFE_AREA,
           }}
         >
+          <StatusBar animated backgroundColor="#2E2E2E" />
           <LoginStack.Navigator
             initialRouteName="Login"
             screenOptions={{

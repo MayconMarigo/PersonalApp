@@ -21,4 +21,5 @@ export interface InputProps extends TextInputProps {
   bgcolor?: ColorValue;
   color?: ColorValue;
   opacity?: number;
+  editable?: boolean;
 }

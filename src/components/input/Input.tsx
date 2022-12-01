@@ -54,6 +54,7 @@ const StyledInput = (props: InputProps) => {
           keyboardType={props.keyboard || "default"}
           secureTextEntry={props.secure || false}
           autoCapitalize={props.autoCapitalize}
+          editable={props.editable}
         />
         {props.icon ? (
           <TouchableOpacity

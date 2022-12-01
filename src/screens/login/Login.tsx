@@ -60,7 +60,11 @@ export default function Login() {
         password: password,
       });
       await AsyncStorage.setItem("@AppPersonal-UID", response?.data?.localId);
-      await AsyncStorage.setItem("@AppPersonal-token", response.data.idToken);
+      await AsyncStorage.setItem("@AppPersonal-token", response?.data?.idToken);
+      await AsyncStorage.setItem(
+        "@AppPersonal-personal",
+        response?.data?.isPersonal ? "1" : "0"
+      );
       setloading(false);
       //@ts-ignore
       navigation.navigate("Home");

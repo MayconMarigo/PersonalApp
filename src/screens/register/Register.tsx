@@ -1,7 +1,6 @@
 import Icon from "@expo/vector-icons/AntDesign";
-import { Chip, Stack } from "@react-native-material/core";
-import MaskInput, { Masks } from "react-native-mask-input";
-import { useState, useEffect } from "react";
+import { ActivityIndicator, Chip, Stack } from "@react-native-material/core";
+import { useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -12,27 +11,24 @@ import {
   useColorScheme,
   View,
 } from "react-native";
+import MaskInput, { Masks } from "react-native-mask-input";
 import StyledButton from "../../components/button/Button";
 import CheckBox from "../../components/checkbox/Checkbox";
 import StyledInput from "../../components/input/Input";
 import Header from "../../components/navigation-header/Header";
-import { ActivityIndicator } from "@react-native-material/core";
 
-import { UserProps } from "./interface";
 import themes from "../../themes";
+import { UserProps } from "./interface";
 
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 //@ts-ignore: Styled Components
 import styled from "styled-components/native";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
-import {
-  CNPJValidator,
-  CPFValidator,
-} from "../../services/validators/cpfcnpj-services";
 import {
   REGISTER_PERSONAL_URL,
   REGISTER_USER_URL,
 } from "../../services/global";
+import { CPFValidator } from "../../services/validators/cpfcnpj-services";
 
 export default function Register() {
   const HeaderContainer = styled.View`
@@ -59,7 +55,6 @@ export default function Register() {
     },
   });
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [firstRender, setFirstRender] = useState<boolean>(true);
   const [isSecure, setIsSecure] = useState<boolean>(true);
   const [isSecureRepeatPassword, setIsSecureRepeatPassword] =
     useState<boolean>(true);
@@ -69,7 +64,6 @@ export default function Register() {
   const [gymChips, setGymChips] = useState<Array<string>>([]);
   const [text, setText] = useState<string>("");
   const [gym, setGym] = useState<string>("");
-  const [about, setAbout] = useState<string>("");
   const [user, setUser] = useState<UserProps>({
     name: "",
     email: "",
@@ -95,6 +89,7 @@ export default function Register() {
     gyms: boolean;
     phone: boolean;
     city: boolean;
+    about: boolean;
   }
   const [errors, setErrors] = useState<IErrors>({
     name: false,
@@ -108,6 +103,7 @@ export default function Register() {
     gyms: false,
     phone: false,
     city: false,
+    about: false,
   });
 
   var chipsArr: Array<string> = [];
@@ -166,7 +162,8 @@ export default function Register() {
     await checkInputErrors();
     if (
       Object.values(errors).includes(true) ||
-      Object.values(user).includes("")
+      !isSubmit
+      // || Object.values(user).includes("")
     ) {
       setLoading(false);
       return null;
@@ -194,7 +191,7 @@ export default function Register() {
       setLoading(false);
       Alert.alert("Cadastro realizado", "Registro realizado com sucesso!");
       navigation.navigate("Login" as never);
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       console.warn(error);
       Alert.alert(
@@ -217,15 +214,16 @@ export default function Register() {
       gyms: false,
       phone: false,
       city: false,
+      about: false,
     };
     //name
     if (user.name.length === 0) errorObj.name = true;
     if (user.name.split(" ").length < 2) errorObj.name = true;
-    if (
-      user.name.split(" ")[0].length < 3 ||
-      user.name.split(" ")[1].length < 3
-    )
-      errorObj.name = true;
+    // if (
+    //   user.name.split(" ")[0].length < 3 ||
+    //   user.name.split(" ")[1].length < 3
+    // )
+    //   errorObj.name = true;
 
     //email
     if (!user.email.includes("@") || !user.email.includes("."))
@@ -272,6 +270,9 @@ export default function Register() {
       //gyms
       if (gymChips.length < 1) errorObj.gyms = true;
 
+      //about
+      if (user.about.length == 0) errorObj.about = true;
+
       setErrors(errorObj);
     }
   };
@@ -301,7 +302,9 @@ export default function Register() {
       gyms: false,
       phone: false,
       city: false,
+      about: false,
     };
+    setIsSubmit(false);
     setUser(userObj);
     setErrors(errorObj);
     setGymChips([]);
@@ -782,15 +785,30 @@ export default function Register() {
                 shadowRadius: 3.84,
                 elevation: 5,
                 marginTop: 10,
+                borderWidth: errors.about ? 1 : 0,
+                borderColor: errors.about ? "red" : "",
               }}
               placeholder="Fale um pouco sobre você...*"
-              onChangeText={(e) => setAbout(e)}
-              value={about}
+              onChangeText={(e) => setUser({ ...user, about: e })}
+              onBlur={() => checkInputErrors()}
+              value={user.about}
               multiline
               numberOfLines={4}
               autoCapitalize="words"
               maxLength={150}
             />
+            {!!errors.about && (
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 12,
+                  marginTop: 5,
+                  marginLeft: 5,
+                }}
+              >
+                Campo obrigatório
+              </Text>
+            )}
           </View>
         )}
 
